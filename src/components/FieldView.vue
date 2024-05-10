@@ -37,25 +37,10 @@ export default {
     },
     execute () {
       this.toggleState();
-      console.log(this.state);
+
       if(this.state === "stop") {
-        let stateIndex = 0;
         const interval = 20_000 / this.data.length;
-        this.process = setInterval(() => {
-          if(this.data[stateIndex]) {
-            this.planeState.direction = this.data[stateIndex].direction;
-            const distance = this.data[stateIndex].speed * 0.002;
-
-            const deltaX = distance * Math.sin((this.planeState.direction * Math.PI) / 180);
-            const deltaY = distance * Math.cos((this.planeState.direction * Math.PI) / 180);
-
-            this.planeState.left += deltaX;
-            this.planeState.top -= deltaY;
-            ++stateIndex;
-          } else {
-            clearInterval(this.process);
-          }
-        }, interval);
+        this.process = setInterval(this.move, interval);
       } else {
         clearInterval(this.process);
         this.resetPlaneState();
@@ -68,6 +53,22 @@ export default {
         top: 50,
         speed: 0,
       };
+    },
+    move() {
+        let stateIndex = 0;
+        if(this.data[stateIndex]) {
+          this.planeState.direction = this.data[stateIndex].direction;
+          const distance = this.data[stateIndex].speed * 0.002;
+
+          const deltaX = distance * Math.sin((this.planeState.direction * Math.PI) / 180);
+          const deltaY = distance * Math.cos((this.planeState.direction * Math.PI) / 180);
+
+          this.planeState.left += deltaX;
+          this.planeState.top -= deltaY;
+          ++stateIndex;
+        } else {
+          clearInterval(this.process);
+        }
     }
   },
 }

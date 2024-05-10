@@ -42,6 +42,6 @@ export default {
     position: absolute;
     height: 2vh;
     width: 1vw;
-    transition: top 1000ms, left 1000ms, rotate 100ms;
+    transition: top 1000ms, left 1000ms, rotate 1000ms;
 }
 </style>
