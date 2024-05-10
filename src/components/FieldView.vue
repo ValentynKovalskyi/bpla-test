@@ -40,7 +40,10 @@ export default {
 
       if(this.state === "stop") {
         const interval = 20_000 / this.data.length;
-        this.process = setInterval(this.move, interval);
+        let stateIndex = 0;
+        this.process = setInterval(() => {
+          this.move(stateIndex++);
+        }, interval);
       } else {
         clearInterval(this.process);
         this.resetPlaneState();
@@ -54,8 +57,7 @@ export default {
         speed: 0,
       };
     },
-    move() {
-        let stateIndex = 0;
+    move(stateIndex) {
         if(this.data[stateIndex]) {
           this.planeState.direction = this.data[stateIndex].direction;
           const distance = this.data[stateIndex].speed * 0.002;
@@ -65,7 +67,6 @@ export default {
 
           this.planeState.left += deltaX;
           this.planeState.top -= deltaY;
-          ++stateIndex;
         } else {
           clearInterval(this.process);
         }
